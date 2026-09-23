@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}My Blog{% endblock %}
+
+{% block content %}
+<header class="page-header">
+    <h1>Recent Posts</h1>
+    <p class="subtitle">Thoughts, stories, and ideas worth sharing.</p>
+</header>
+
+{% if posts %}
+    <div class="post-list">
+        {% for post in posts %}
+        <article class="post-card">
+            <a href="{{ url_for('view_post', post_id=post.id) }}" class="post-card-link">
+                <h2 class="post-card-title">{{ post.title }}</h2>
+                <p class="post-card-excerpt">{{ post.content[:200] }}{% if post.content|length > 200 %}...{% endif %}</p>
+                <div class="post-card-meta">
+                    <span class="post-author">{{ post.author }}</span>
+                    <span class="post-date">{{ post.created_at|format_date }}</span>
+                </div>
+            </a>
+        </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <h2>No posts yet</h2>
+        <p>Be the first to share something!</p>
+        <a href="{{ url_for('new_post') }}" class="btn btn-primary">Create a Post</a>
+    </div>
+{% endif %}
+{% endblock %}
